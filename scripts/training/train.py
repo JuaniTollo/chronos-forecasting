@@ -713,6 +713,7 @@ def main(
         torch_compile=torch_compile,
         ddp_find_unused_parameters=False,
         remove_unused_columns=False,
+        save_safetensors=False,  # Added this line
         fp16=True,  # Enable mixed precision
         tf32=tf32,
     )
@@ -728,7 +729,7 @@ def main(
     trainer.train()
 
     if is_main_process():
-        model.save_pretrained(output_dir / "checkpoint-final")
+        model.save_pretrained(output_dir / "checkpoint-final",safe_serialization=False)
         save_training_info(
             output_dir / "checkpoint-final", training_config=raw_training_config
         )
@@ -738,4 +739,4 @@ if __name__ == "__main__":
     logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     logger = logging.getLogger(__file__)
     logger.setLevel(logging.INFO)
-    app()
+    app()   
