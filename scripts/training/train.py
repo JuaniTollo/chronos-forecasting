@@ -642,22 +642,26 @@ def main(
         eos_token_id=eos_token_id,
     )
 
+    ## COMMENT FOR TRAINED THE ORIGINAL MODEL ###
+    #from transformers import LongT5ForConditionalGeneration
+    #model = LongT5ForConditionalGeneration.from_pretrained(model)
+    
     ## LORA ##
-    print("LoRA is working")
-    # LoRA configuration
-    from peft import get_peft_model, LoraConfig
+    # print("LoRA is working")
+    # # LoRA configuration
+    # from peft import get_peft_model, LoraConfig
 
-    lora_config = LoraConfig(
-        r=8,                     # Adjust based on needs
-        lora_alpha=32,
-        target_modules=["q", "v"],
-        lora_dropout=0.1,
-        bias="none"
-    )
+    # lora_config = LoraConfig(
+    #     r=8,                     # Adjust based on needs
+    #     lora_alpha=32,
+    #     target_modules=["q", "v"],
+    #     lora_dropout=0.1,
+    #     bias="none"
+    # )
 
-    # Wrap the model with LoRA
-    model = get_peft_model(model, lora_config)
-    #model.gradient_checkpointing_enable()
+    # # Wrap the model with LoRA
+    # model = get_peft_model(model, lora_config)
+    # #model.gradient_checkpointing_enable()
 
     ## LORA ##
 
