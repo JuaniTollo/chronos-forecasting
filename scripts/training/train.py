@@ -642,6 +642,25 @@ def main(
         eos_token_id=eos_token_id,
     )
 
+    ## LORA ##
+    print("LoRA is working")
+    # LoRA configuration
+    from peft import get_peft_model, LoraConfig
+
+    lora_config = LoraConfig(
+        r=8,                     # Adjust based on needs
+        lora_alpha=32,
+        target_modules=["q", "v"],
+        lora_dropout=0.1,
+        bias="none"
+    )
+
+    # Wrap the model with LoRA
+    model = get_peft_model(model, lora_config)
+    #model.gradient_checkpointing_enable()
+
+    ## LORA ##
+
     chronos_config = ChronosConfig(
         tokenizer_class=tokenizer_class,
         tokenizer_kwargs=tokenizer_kwargs,
@@ -691,10 +710,11 @@ def main(
         max_steps=max_steps,
         gradient_accumulation_steps=gradient_accumulation_steps,
         dataloader_num_workers=dataloader_num_workers,
-        tf32=tf32,  # remove this if not using Ampere GPUs (e.g., A100)
         torch_compile=torch_compile,
         ddp_find_unused_parameters=False,
         remove_unused_columns=False,
+        fp16=True,  # Enable mixed precision
+        tf32=tf32,
     )
 
     # Create Trainer instance
